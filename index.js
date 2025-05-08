@@ -77,7 +77,7 @@ app.post("/api/shorturl", async (req, res) => {
 
   const urlRegex = /^https?:\/\/(www\.)?[\w\-]+(\.[\w\-]+)+(\/.*)?$/;
   if (!urlRegex.test(url_input)) {
-    return res.status(400).json({ error: "invalid url" });
+    return res.json({ error: "invalid url" });
   }
 
   try {
