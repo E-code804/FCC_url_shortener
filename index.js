@@ -92,6 +92,20 @@ app.post("/api/shorturl", async (req, res) => {
   }
 });
 
+app.get("/api/shorturl/:url_id", async (req, res) => {
+  const url_id = req.params.url_id;
+
+  try {
+    const urlDoc = await Url.findOne({ short_url: url_id });
+    const { original_url } = urlDoc;
+
+    res.redirect(original_url);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
 app.listen(port, function () {
   console.log(`Listening on port ${port}`);
 });
