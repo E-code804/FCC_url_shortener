@@ -16,10 +16,14 @@ app.use("/public", express.static(`${process.cwd()}/public`));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  process.env.MONGO_URI ||
+    "mongodb+srv://epfeffer:Sansmega6969@cluster0.wc3dkbm.mongodb.net/",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 const urlSchema = new mongoose.Schema({
   original_url: {
@@ -69,7 +73,12 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", async (req, res) => {
-  const { url_input } = req.body;
+  const url_input = req.body.url;
+
+  const urlRegex = /^https?:\/\/(www\.)?[\w\-]+(\.[\w\-]+)+(\/.*)?$/;
+  if (!urlRegex.test(url_input)) {
+    return res.status(400).json({ error: "invalid url" });
+  }
 
   try {
     // Check if url_input already exists
