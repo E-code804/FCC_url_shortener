@@ -16,14 +16,10 @@ app.use("/public", express.static(`${process.cwd()}/public`));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect(
-  process.env.MONGO_URI ||
-    "mongodb+srv://epfeffer:Sansmega6969@cluster0.wc3dkbm.mongodb.net/",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const urlSchema = new mongoose.Schema({
   original_url: {
